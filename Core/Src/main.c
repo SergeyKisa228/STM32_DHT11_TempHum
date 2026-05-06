@@ -33,6 +33,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+uint8_t error_was = 0;
 uint8_t dht11_raw[5];
 /* USER CODE END PV */
 
@@ -213,6 +214,16 @@ int main(void)
 
 	   if (res == 0)
 	   {
+		   if(error_was)
+		   {
+	    	    ST7735_DrawRect(0, 0, 160, 128, ST7735_COLOR_WHITE);
+	    	    ST7735_DrawRect(4, 2, 160, 126, ST7735_COLOR_BLACK);
+		    	ST7735_DrawRect(94, 2, 96, 126, ST7735_COLOR_WHITE);
+		    	ST7735_DrawRect(158, 2, 160, 126, ST7735_COLOR_WHITE);
+		    	ST7735_DrawRect(2, 105, 160, 107, ST7735_COLOR_WHITE);
+		    	ST7735_DrawRect(2, 26, 160, 28, ST7735_COLOR_WHITE);
+		    	error_was = 0;
+		    }
 	     char buf[16];
 	     sprintf(buf, "Hum: %d %%", humidity);
 	     ST7735_DrawString(10, 45, buf, Font_8x16, ST7735_COLOR_GREEN, ST7735_COLOR_BLACK);
@@ -224,6 +235,7 @@ int main(void)
 	   }
 	   else
 	   {
+		 error_was = 1;
 	     ST7735_DrawRect(0, 0, 158, 126, ST7735_COLOR_BLACK);
 	     ST7735_DrawString(10, 10, "DHT Error", Font_8x16, ST7735_COLOR_WHITE, ST7735_COLOR_RED);
 
